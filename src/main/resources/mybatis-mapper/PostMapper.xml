@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.jsp.demo.dao.PostMapper">
+
+
+
+<resultMap type="com.jsp.demo.dto.PostDto" id="postResult">
+<id property="id" column="id" />
+<result property="title" column="title" />
+<result property="content" column="content" />
+<result property="memberName" column="memberName" />
+<result property="memberId" column="memberId" />
+
+</resultMap>
+
+
+
+<insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="Post">
+ INSERT INTO Post(title, content, member_id)
+ VALUES (#{title}, #{content}, #{memberId})
+</insert>
+
+<select id="findById" resultMap="postResult">
+SELECT p.id as id, p.title as title, p.content as content, p.member_id as memberId, m.name as memberName
+FROM Post p
+LEFT OUTER JOIN Member m ON p.member_id = m.id
+WHERE p.id = #{id}
+</select>
+
+<select id="findOne" resultType="com.jsp.demo.domain.Post">
+SELECT *
+FROM Post
+WHERE id = #{id}
+</select>
+</mapper>
